@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "0a75755f-f6c2-4b32-8ffd-0c1dca6247ff": {
+      "ProjectGuid": "0a75755f-f6c2-4b32-8ffd-0c1dca6247ff",
+      "DisplayName": "MyVector",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}
