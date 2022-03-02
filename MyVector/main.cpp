@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include "Vector.hpp"
 #include <algorithm>
+#include <string>
 
 namespace mine
 {
@@ -113,6 +114,36 @@ namespace mine
 		}
 		Print(v);
 	}
+
+	void test6()
+	{
+		vector<int> v1;
+		v1.push_back(1);
+		v1.push_back(2);
+		v1.push_back(3);
+
+		vector<int> v2;
+		v2 = v1;
+		Print(v1);
+		Print(v2);
+	}
+
+	void test7()
+	{
+		vector<std::string> v1;
+		v1.push_back("1111");
+		v1.push_back("2222");
+		v1.push_back("3333");
+		v1.push_back("4444");
+		v1.push_back("5555");
+		Print(v1);
+
+		for (const auto& e : v1)
+		{
+			cout << e << " ";
+		}
+		cout << endl;
+	}
 }
 
 int main()
@@ -121,6 +152,8 @@ int main()
 	//mine::test1();
 	//mine::test3();
 	//mine::test4();
-	mine::test5();
+	//mine::test5();
+	//mine::test6();
+	mine::test7();
 	return 0;
 }
