@@ -21,33 +21,60 @@ namespace mine
 		{}
 	};
 
-	template <class T>
+	template <class T, class Ref, class Ptr>
 	struct _list_iterator
 	{
 		typedef _list_node<T> node;
-		typedef _list_iterator<T> self;
+		typedef _list_iterator<T, Ref, Ptr> self;
 
 		node* _pnode;
 		_list_iterator(node* pnode)
 			: _pnode(pnode)
 		{}
 
+		//拷贝构造、operator=、析构用系统生成的就行
+
 		//节点的指针原生行为不满足迭代器定义
 		//这里迭代器通过类去封装节点的指针，重载运算符来控制
-		T operator* ()
+		Ref operator* ()
 		{
 			return _pnode->_val;
 		}
 
-		bool operator!= (const self& s)
+		bool operator!= (const self& s) const
 		{
 			return _pnode != s._pnode;
+		}
+
+		bool operator== (const self& s)	const
+		{
+			return _pnode == s._pnode;
 		}
 
 		self& operator++ ()
 		{
 			_pnode = _pnode->_next;
 			return *this;
+		}
+
+		self operator++ (int)
+		{
+			self temp(*this);
+			_pnode = _pnode->_next;
+			return temp;
+		}
+
+		self& operator-- ()
+		{
+			_pnode = _pnode->_prev;
+			return *this;
+		}
+
+		self operator-- (int)
+		{
+			self temp(*this);
+			_pnode = _pnode->_prev;
+			return temp;
 		}
 	};
 
@@ -56,14 +83,27 @@ namespace mine
 	{
 		typedef _list_node<T> node;
 	public:
-		typedef _list_iterator<T> iterator;
+		typedef _list_iterator<T, T&, T*> iterator;
+		typedef _list_iterator<T, const T&, const T*> const_iterator;
+		//只能比读，不能写，_list_iterator<T>中如何控制？
+		//typedef _list_const_iterator<T> const_iterator;
 
 		iterator begin()
 		{
 			return iterator(_head->_next);
 		}
 
+		iterator begin() const
+		{
+			return iterator(_head->_next);
+		}
+
 		iterator end()
+		{
+			return iterator(_head);
+		}	
+
+		iterator end()	const
 		{
 			return iterator(_head);
 		}
