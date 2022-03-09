@@ -43,14 +43,43 @@ namespace mine
 		Print(lt);
 	}
 
+	class Date
+	{
+	public:
+		int _year = 0;
+		int _month = 1;
+		int _day = 1;
+	};
+
 	void test2()
 	{
+		list<Date> lt;
+		lt.push_back(Date());
+		lt.push_back(Date());
+		lt.push_back(Date());
 
+		list<Date>::iterator it = lt.begin();
+		while (it != lt.end())
+		{
+			//cout << *it << " ";
+			//cout << (*it)._year << " " << (*it)._month << " " << (*it)._day << endl;
+			cout << it->_year << " " << it->_month << " " << it->_day << endl;
+			++it;
+		}
+		cout << endl;
+	}
+
+	void test3()
+	{
+		list<int> lt;
+		
 	}
 }
 
 int main()
 {
-	mine::test1();
-	mine::test2();
+	//mine::test1();
+	//mine::test2();
+	mine::test3();
+	return 0;
 }
