@@ -1,2 +1,22 @@
 ﻿  main.cpp
+D:\GitHubWork\My_Cpp_Programming\_stack_queue\Priority_queue.h(56,1): warning C4267: “参数”: 从“size_t”转换到“const T”，可能丢失数据
+          with
+          [
+              T=int
+          ]
+D:\GitHubWork\My_Cpp_Programming\_stack_queue\Priority_queue.h(50): message : 在编译 类 模板 成员函数“void mine_priority_queue::priority_queue<int,std::vector<int,std::allocator<T>>,mine_priority_queue::greater<T>>::AdjustDown(size_t)”时
+          with
+          [
+              T=int
+          ]
+D:\GitHubWork\My_Cpp_Programming\_stack_queue\Priority_queue.h(87): message : 查看对正在编译的函数 模板 实例化“void mine_priority_queue::priority_queue<int,std::vector<int,std::allocator<T>>,mine_priority_queue::greater<T>>::AdjustDown(size_t)”的引用
+          with
+          [
+              T=int
+          ]
+D:\GitHubWork\My_Cpp_Programming\_stack_queue\main.cpp(75): message : 查看对正在编译的 类 模板 实例化“mine_priority_queue::priority_queue<int,std::vector<int,std::allocator<T>>,mine_priority_queue::greater<T>>”的引用
+          with
+          [
+              T=int
+          ]
   _stack_queue.vcxproj -> D:\GitHubWork\My_Cpp_Programming\_stack_queue\x64\Debug\_stack_queue.exe
