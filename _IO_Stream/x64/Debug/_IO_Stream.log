@@ -1,2 +1,4 @@
 ﻿  main.cpp
-  _IO_Stream.vcxproj -> D:\GitHubWork\My_Cpp_Programming\_IO_Stream\x64\Debug\_IO_Stream.exe
+D:\GitHubWork\My_Cpp_Programming\_IO_Stream\main.cpp(200,14): warning C4477: “sscanf”: 格式字符串“%d”需要类型“int *”的参数，但可变参数 2 拥有了类型“int”
+D:\GitHubWork\My_Cpp_Programming\_IO_Stream\main.cpp(196,2): error C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+D:\GitHubWork\My_Cpp_Programming\_IO_Stream\main.cpp(200,2): error C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.

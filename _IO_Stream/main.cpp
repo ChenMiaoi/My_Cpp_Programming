@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -79,13 +81,131 @@ struct Stu
 //就可以重载operator void* 或者 operator bool
 //跟operator new很像，属于重载中的特例
 
+//int main()
+//{
+//	//有些oj多行测试用例，要求持续接受输入
+//	string str;
+//	while (cin >> str)
+//	{
+//		// ...
+//		cout << str << endl;
+//	}
+//}
+
+//void ReadFile()
+//{
+//	ifstream ifs("main.cpp");
+//	char ch;
+//	/*while ((ch = ifs.get()) != EOF)
+//	{
+//		cout << ch;
+//	}*/
+//
+//	/*while (ifs.get(ch))
+//	{
+//		cout << ch;
+//	}*/
+//
+//	while (ifs)
+//	{
+//		cout << (char)ifs.get();
+//	}
+//	cout << endl;
+//}
+//
+//void WriteFile()
+//{
+//	ofstream ofs("write.txt");
+//	ofs.put('a');
+//	ofs.write("hello world", 10);
+//}
+//
+//int main()
+//{
+//	ReadFile();
+//	WriteFile();
+//	return 0;
+//}
+
+struct ServerInfo
+{
+	char _ip[20];
+	int _port;
+};
+
+struct ConfigManager
+{
+public:
+	ConfigManager(const char* filename)
+		: _filename(filename)
+	{}
+	void ReadBin(ServerInfo& info)
+	{
+		ifstream ifs(_filename);
+		ifs.read((char*)&info, sizeof(info));
+	}
+	void WriteBin(const ServerInfo& info)
+	{
+		ofstream ofs(_filename);
+		ofs.write((char*)&info, sizeof(info));
+	}
+
+	void WriteTxT(const ServerInfo& info)
+	{
+		ofstream ofs(_filename);
+		ofs.write(info._ip, strlen(info._ip));
+		ofs.put('\n');
+		string portstr = to_string(info._port);
+		ofs.write(portstr.c_str(), portstr.size());
+	}
+	void ReadTxT(ServerInfo& info)
+	{
+		ifstream ifs(_filename);
+		ifs.getline(info._ip, 20);
+		char portbuf[20];
+		ifs.getline(portbuf, 20);
+		info._port = stoi(portbuf);
+	}
+private:
+	string _filename;
+};
+
+//int main()
+//{
+//	ServerInfo winfo = { "192.0.0.1", 80 };
+//	ServerInfo rinfo;
+//	//读写 -- 二进制 -- 读写简单，高效快捷。 缺点：除了字符和字符串，内存中写到文件中是乱码
+//	//ConfigManager cfbin("config.bin");
+//	//cfbin.WriteBin(winfo);
+//	//ConfigManager cfbin("config.bin");
+//	//cfbin.ReadBin(rinfo);
+//
+//	//读写 -- 文本
+//	/*ConfigManager cftxt("config.txt");
+//	cftxt.WriteTxT(winfo);*/
+//	ConfigManager cftxt("config.bin");
+//	cftxt.ReadBin(rinfo);
+//	return 0;
+//}
+
 int main()
 {
-	//有些oj多行测试用例，要求持续接受输入
-	string str;
-	while (cin >> str)
-	{
-		// ...
-		cout << str << endl;
-	}
+	ServerInfo info = { "192.0.0.1", 80 };
+	//char buf[128];
+	////序列化
+	//sprintf(buf, "%s %d", info._ip, info._port);
+
+	////反序列化
+	//ServerInfo rinfo;
+	//sscanf(buf, "%s%d", rinfo._ip, &rinfo._port);
+
+	/*stringstream ssm;
+	ssm << info._ip << " " << info._port;
+	string buf = ssm.str();*/
+
+	stringstream ssm;
+	ssm.str("127.0.0.1 90");
+	ServerInfo rinfo;
+	ssm >> rinfo._ip >> rinfo._port;
+	return 0;
 }
