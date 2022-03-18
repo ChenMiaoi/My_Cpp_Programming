@@ -221,37 +221,176 @@ using namespace std;
 
 
 //对于static对象，基类定义了static静态成员，则整个继承体系里面只有一个这样的成员。无论派生出多少个子类，都只有一个static成员实例 。
-class Person
+//class Person
+//{
+//public:
+//	Person() { ++_count; }
+//protected:
+//	string _name; // 姓名
+//public:
+//	static int _count; // 统计人的个数。
+//};
+//
+//int Person::_count = 0;
+//
+//class Student : public Person
+//{
+//protected:
+//	int _stuNum; // 学号
+//};
+//
+//class Graduate : public Student
+//{
+//protected:
+//	string _seminarCourse; // 研究科目
+//};
+//
+//int main()
+//{
+//	Student s1;
+//	Student s2;
+//	Student s3;
+//	Graduate s4;
+//	cout << " 人数 :" << Person::_count << endl;
+//	Student::_count = 0;
+//	cout << " 人数 :" << Person::_count << endl;
+//}
+
+//多继承
+//一个子类有两个或两个以上的直接父类
+//有多继承就会出现菱形继承
+//1.数据冗余
+//2.二义性
+//class Person
+//{
+//public:
+//	string _name; // 姓名
+//};
+//
+//class Student : virtual public Person
+//{
+//protected:
+//	int _num; //学号
+//};
+//
+//class Teacher : virtual public Person
+//{
+//protected:
+//	int _id; // 职工编号
+//};
+//
+//class Assistant : public Student, public Teacher
+//{
+//protected:
+//	string _majorCourse; // 主修课程
+//};
+//
+////cpp不能容忍数据冗余和二义性，
+////提出了一个新方案：虚继承 virtual
+////虚继承可以解决数据冗余和二义性 
+///*
+//	1.通过监视窗口已经看不到真实的存在，因为监视窗口被编译器处理过
+//	2.建议使用内存窗口来进行查看
+//*/
+//
+//void Test()
+//{
+//	// 这样会有二义性无法明确知道访问的是哪一个
+//	Assistant a;
+//	a._name = "peter";
+//	// 需要显示指定访问哪个父类的成员可以解决二义性问题，但是数据冗余问题无法解决
+//	a.Student::_name = "xxx";
+//	a.Teacher::_name = "yyy";
+//}
+//
+//int main()
+//{
+//	Test();
+//}
+
+//class A
+//{
+//public:
+//	int _a;
+//};
+//
+//class B : virtual public A
+//{
+//public:
+//	int _b;
+//};
+//
+//class C : virtual public A
+//{
+//public:
+//	int _c;
+//};
+//
+//class D : public B, public C
+//{
+//public:
+//	int _d;
+//};
+
+//继承的virtual会指向一个空间，第一个保存的是多态的偏移量 -- 虚基表
+//第二个就是保存的虚继承的相对偏移量 -- 对于冗余的数据
+/*
+	D d;
+	B b = d;
+	C c = d;
+	子类赋值给父类，这个切片行为就需要通过虚基表中的偏移量
+	找到公共虚基类A的成员
+*/
+//虽然虚继承，补了菱形继承的坑，但是付出了很大的代价
+/*
+	1.对象模型更复杂了，学习理解成本很高
+	2.付出了一定的效率，有一定的效率影响
+*/
+
+//实际中，一般情况下，建议不要设计出菱形继承
+//那么就不会用菱形虚拟继承，就不会弄这么多复杂的了
+
+//int main()
+//{
+//	D d;
+//	d.B::_a = 1;
+//	d.A::_a = 2;
+//	d._b = 3;
+//	d._c = 4;
+//	d._d = 5;
+//}
+
+class A
 {
 public:
-	Person() { ++_count; }
+	void func()
+	{}
 protected:
-	string _name; // 姓名
-public:
-	static int _count; // 统计人的个数。
+	int _a;
 };
 
-int Person::_count = 0;
-
-class Student : public Person
+//B继承了A，可以复用A
+class B : public A
 {
 protected:
-	int _stuNum; // 学号
+	int _b;
 };
 
-class Graduate : public Student
+//C组合A，也可以复用A
+class C
 {
-protected:
-	string _seminarCourse; // 研究科目
+private:
+	int _c;
+	A _a;
 };
+
+//优先考虑组合，再考虑继承
+//B和A之间是一种强关联关系 -- 白箱复用 -- 透明的 -- A的封装是对B是不太起作用的
+//C和A之间是一种弱关联关系 -- 黑箱复用 -- 不可见的，只能用A公有的成员 - A的封装是对C起作用的
+//软件设计类之间关系或者模块间关系强调，高内聚，低耦合
+//类里面的成员之间关联度很高，类和类之间关联度很低
 
 int main()
 {
-	Student s1;
-	Student s2;
-	Student s3;
-	Graduate s4;
-	cout << " 人数 :" << Person::_count << endl;
-	Student::_count = 0;
-	cout << " 人数 :" << Person::_count << endl;
+
 }
