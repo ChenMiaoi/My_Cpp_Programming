@@ -204,3 +204,175 @@ using namespace std;
 //
 //}
 
+//抽象类
+//包含纯虚函数的类叫做抽象类 -- 不能实例化出对象
+//可以更好的去表示现实世界中，没有实例对象对应的抽象类型
+//体现接口继承，强制子类去重写虚函数(不重写子类也是抽象类)
+//class Car
+//{
+//public:
+//	//纯虚函数
+//	virtual void Drive() = 0;
+//};
+//
+//class Benz : public Car
+//{
+//public:
+//	virtual void Drive()
+//	{
+//		cout << "Benz" << endl;
+//	}
+//};
+//
+//class BMW : public Car
+//{
+//public:
+//	virtual void Drive()
+//	{
+//		cout << "BMW" << endl;
+//	}
+//};
+//
+//int main()
+//{
+//	Car* benz = new Benz;
+//	benz->Drive();
+//
+//	Car* bmw = new BMW;
+//	bmw->Drive();
+//}
+
+/*
+	这里跟虚继承不一样的，他们之间都用了virtual关键字，但是使用场景完全不一样，解决的问题
+	也是不一样的，他们之间没有关联
+	虚继承产生叫做虚基表，虚基表里面存储的是虚继承的偏移量
+*/
+
+//class Base
+//{
+//public:
+//	virtual void func()
+//	{}
+//private:
+//	int _a = 1;
+//	char _ch = '\0';
+//};
+//
+///*
+//	满足多态条件以后，构成多态：
+//		指针或者引用，调用虚函数时，不是编译时确定的，是运行时到指向的对象中的虚表
+//		中去找对应虚函数调用，所以指向的父类对象，调用的就是父类的虚函数，指向的是子类的
+//		对象，调用的就是子类的虚函数
+//
+//	如果不构成多态：
+//		就是编译时确定对应的函数方法
+//*/
+//
+//int main()
+//{
+//	cout << sizeof(Base) << endl;
+//}
+
+//为什么必须要引用或指针？
+//因为切片操作不会将对象的虚表切过去，而引用或指针可以
+
+//单继承
+//class Base
+//{
+//public:
+//	virtual void func1()
+//	{
+//		cout << "Base::func1()" << endl;
+//	}
+//	virtual void func2()
+//	{
+//		cout << "Base::func2()" << endl;
+//	}
+//};
+//
+//class Drive : public Base
+//{
+//public:
+//	virtual void func1()
+//	{
+//		cout << "Drive::func1()" << endl;
+//	}
+//	virtual void func3()
+//	{
+//		cout << "Drive::func3()" << endl;
+//	}
+//	virtual void func4()
+//	{
+//		cout << "Drive::func4()" << endl;
+//	}
+//};
+//
+//typedef void(*VFunc)();
+//
+////打印虚表
+//void PrintVFT(VFunc* ptr)	//存函数指针的数组指针 -- VFunc ptr[]
+//{
+//	printf("虚表地址 : %p\n", ptr);
+//	for (int i = 0; ptr[i] != nullptr; ++i)
+//	{
+//		printf("VFT[%d] : %p\n", i, ptr[i]);
+//		ptr[i]();
+//	}
+//	cout << endl;
+//}
+//
+//int main()
+//{
+//	Base b;
+//	PrintVFT((VFunc*)(*(int*)&b));
+//	Drive d;
+//	PrintVFT((VFunc*)(*(int*)&d));
+//}
+
+//多继承
+class Base1 {
+public:
+	virtual void func1() { cout << "Base1::func1" << endl; }
+	virtual void func2() { cout << "Base1::func2" << endl; }
+private:
+	int b1;
+};
+
+class Base2 {
+public:
+	virtual void func1() { cout << "Base2::func1" << endl; }
+	virtual void func2() { cout << "Base2::func2" << endl; }
+private:
+	int b2;
+};
+
+class Derive : public Base1, public Base2 {
+public:
+	virtual void func1() { cout << "Derive::func1" << endl; }
+	virtual void func3() { cout << "Derive::func3" << endl; }
+private:
+	int d1;
+};
+
+typedef void(*VFPTR) ();
+void PrintVTable(VFPTR vTable[])
+{
+	cout << " 虚表地址>" << vTable << endl;
+	for (int i = 0; vTable[i] != nullptr; ++i)
+	{
+		printf(" 第%d个虚函数地址 :0X%p,->", i, vTable[i]);
+		VFPTR f = vTable[i];
+		f();
+	}
+	cout << endl;
+}
+
+int main()
+{
+	Derive d;
+	VFPTR* vTableb1 = (VFPTR*)(*(int*)&d);
+	PrintVTable(vTableb1);
+	VFPTR* vTableb2 = (VFPTR*)(*(int*)((char*)&d + sizeof(Base1)));
+	PrintVTable(vTableb2);
+	return 0;
+}
