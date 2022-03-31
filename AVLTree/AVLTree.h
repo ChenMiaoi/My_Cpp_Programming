@@ -87,7 +87,7 @@ public:
 		//2.如果出现不平衡，则旋转
 		while (cur != _root)
 		{
-			if (parent->left == cur)
+			if (parent->_left == cur)
 				parent->_bf--;
 			else
 				parent->_bf++;
@@ -104,6 +104,25 @@ public:
 			else if (parent->_bf == 2 || parent->_bf == -2)
 			{
 				//parent所在的子树已经不平衡，需要旋转处理以下
+				//右单旋 ：遵循搜索树规则，尽量让两边平衡
+				//1.根的左子树的右子树去做根的左子树
+				//2.根以及根的右子树去做根左子树的右子树
+				//根的左节点就做现在的根
+				if (parent->_bf == -2)
+				{
+					if (cur->_bf == -1)
+						RotateR(parent);	//右单旋
+					else	// cur->_bf == 1
+						RotateLR(parent);
+				}
+				else
+				{
+					if (cur->_bf == 1)
+						RotateL(parent);
+					else	// cur->_bf == -1
+						RotateRL(parent);
+				}
+				break;
 			}
 			else
 			{
@@ -112,6 +131,84 @@ public:
 			}
 		}
 		return true;
+	}
+
+	//右单旋
+	void RotateR(Node* parent)
+	{
+		Node* subL = parent->_left;
+		Node* subLR = subL->_right;
+
+		parent->_left = subLR;
+		if (subLR)
+			subLR->_parent = parent;
+		Node* parentParent = parent->_parent;	//可能这只是一个子树
+		subL->_right = parent;
+		parent->_parent = subL;
+
+		if (parent == _root)
+		{
+			_root = subL;
+			_root->_parent = nullptr;
+		}
+		else
+		{
+			if (parentParent->_left == parent)
+				parentParent->_left = subL;
+			else
+				parentParent->_right = subL;
+
+			subL->_parent = parentParent;
+		}
+
+		parent->_bf = subL->_bf = 0;
+	}
+
+	//左单旋
+	void RotateL(Node* parent)
+	{
+		Node* subR = parent->_right;
+		Node* subRR = subR->_right;
+
+		parent->_right = subRR;
+		if (subRR)
+			subRR->_parent = parent;
+		Node* parentParent = parent->_parent;	//可能这只是一个子树
+		subR->_left = parent;
+		parent->_parent = subR;
+
+		if (parent == _root)
+		{
+			_root = subR;
+			_root->_parent = nullptr;
+		}
+		else
+		{
+			if (parentParent->_left == parent)
+				parentParent->_left = subR;
+			else
+				parentParent->_right = subR;
+
+			subR->_parent = parentParent;
+		}
+
+		parent->_bf = subR->_bf = 0;
+	}
+
+	//左右双旋
+	//先以左子树为旋转点，进行左单旋
+	//再以根为旋转点，进行右单旋
+	void RotateLR(Node* parent)
+	{
+		RotateL(parent->_left);
+		RotateR(parent);
+		//平衡因子的调节...
+	}
+
+	//右左双旋
+	void RotateRL(Node* parent)
+	{
+		
 	}
 
 	Node* Find(const K& key)
