@@ -168,11 +168,11 @@ public:
 	void RotateL(Node* parent)
 	{
 		Node* subR = parent->_right;
-		Node* subRR = subR->_right;
+		Node* subRL = subR->_left;
 
-		parent->_right = subRR;
-		if (subRR)
-			subRR->_parent = parent;
+		parent->_right = subRL ;
+		if (subRL)
+			subRL->_parent = parent;
 		Node* parentParent = parent->_parent;	//可能这只是一个子树
 		subR->_left = parent;
 		parent->_parent = subR;
@@ -203,12 +203,37 @@ public:
 		RotateL(parent->_left);
 		RotateR(parent);
 		//平衡因子的调节...
+
 	}
 
 	//右左双旋
 	void RotateRL(Node* parent)
 	{
-		
+		Node* subR = parent->_right;
+		Node* subRL = subR->_left;
+		int bf = subRL->_bf;
+
+		RotateR(parent->_right);
+		RotateL(parent);
+
+		if (bf == 1)
+		{
+			subR->_bf = 0;
+			parent->_bf = -1;
+			subRL->_bf = 0;
+		}
+		else if (bf == -1)
+		{
+			parent->_bf = 0;
+			subR->_bf = 1;
+			subRL->_bf = 0;
+		}
+		else if (bf == 0)
+		{
+			parent->_bf = subR->_bf = subRL->_bf = 0;
+		}
+		else
+			assert(false);
 	}
 
 	Node* Find(const K& key)
