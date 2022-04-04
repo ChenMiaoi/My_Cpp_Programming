@@ -37,15 +37,22 @@ public:
 
 	~AVLTree()
 	{
-
+		_Destroy(_root);
+		_root = nullptr;
 	}
 public:
-	bool Insert(const pair<K, V>& kv)
+	V& operator[] (const K& key)
+	{
+		pair<Node*, bool> ret = Insert(make_pair(key, V()));
+		return ret.first->_kv.second;
+	}
+
+	pair<Node*, bool> Insert(const pair<K, V>& kv)
 	{
 		if (_root == nullptr)
 		{
 			_root = new Node(kv);
-			return true;
+			return make_pair(_root, true);
 		}
 		Node* parent = _root, * cur = _root;
 		while (cur)
@@ -61,9 +68,10 @@ public:
 				cur = cur->_right;
 			}
 			else
-				return false;
+				return make_pair(cur, false);
 		}
 		cur = new Node(kv);
+		Node* newnode = cur;
 		if (parent->_kv.first < kv.first)
 		{
 			parent->_right = cur;
@@ -130,7 +138,7 @@ public:
 				assert(false);
 			}
 		}
-		return true;
+		return make_pair(newnode, true);
 	}
 
 	//右单旋
@@ -200,10 +208,28 @@ public:
 	//再以根为旋转点，进行右单旋
 	void RotateLR(Node* parent)
 	{
+		Node* subL = parent->_left;
+		Node* subLR = subL->_right;
+		int bf = subLR->_bf;
 		RotateL(parent->_left);
 		RotateR(parent);
 		//平衡因子的调节...
-
+		if (bf == -1)
+		{
+			subL->_bf = 0;
+			parent->_bf = 1;
+			subLR->_bf = 0;
+		}
+		else if (bf == 1)
+		{
+			parent->_bf = 0;
+			subL->_bf = -1;
+			subLR->_bf = 0;
+		}
+		else if (bf == 0)
+			parent->_bf = subL->_bf = subLR->_bf = 0;
+		else
+			assert(false);
 	}
 
 	//右左双旋
@@ -238,12 +264,120 @@ public:
 
 	Node* Find(const K& key)
 	{
+		Node* cur = _root;
+		while (cur)
+		{
+			if (cur->_kv.first < key)
+				cur = cur->_right;
+			else if (cur->_kv.first > key)
+				cur = cur->_left;
+			else
+				return cur;
+		}
 		return nullptr;
 	}
 
 	bool Erase(const K& key)
 	{
+		/*
+			1.先找到删除值所在的节点
+			2.按搜索树的规则分类删除。
+				a.左为空
+				b.右为空
+				c.左右都不为空
+			3.更新平衡因子(基本上和插入是反着的)，如果出现不平衡->旋转
+				a.删除在parent的左，平衡因子++
+				b.删除在parent的右，平衡因子--
+				c.更新后，parent->_bf == 0，说明原来是1或者-1，把高的删除了，高度变了，要继续向上更新
+				d.更新后parent->_bf == 1 || parent->_bf == -1，说明原来是0，现在把一边删除了一个，parent的高度不变，不影响上一层，停止更新
+				e.更新后parent->_bf == 2或者-2，不平衡->旋转
+		*/
 		return false;
+	}
+
+	bool IsAVLTree()
+	{
+		return _IsBalance(_root);
+	}
+
+	int Height()
+	{
+		return _Height(_root);
+	}
+
+	void PrevOrder()
+	{
+		_PrevOrder(_root);
+	}
+	void InOrder()
+	{
+		_InOrder(_root);
+	}
+	void PostOrder()
+	{
+		_PostOrder(_root);
+	}
+protected:
+	void _Destroy(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		_Destroy(root->_left);
+		_Destroy(root->_right);
+		delete root;
+	}
+
+	int _Height(Node* root)
+	{
+		if (root == nullptr)
+			return 0;
+		int leftHeight = _Height(root->_left);
+		int rightHeight = _Height(root->_right);
+
+		return rightHeight > leftHeight ? rightHeight + 1 : leftHeight + 1;
+
+	}
+
+	bool _IsBalance(Node* root)
+	{
+		if (root == nullptr)
+			return true;
+		int leftHeight = _Height(root->_left);
+		int rightHeight = _Height(root->_right);
+
+		//检查一下平衡因子是否正确
+		if (rightHeight - leftHeight != root->_bf)
+		{
+			cout << "平衡因子异常:> " << root->_kv.first << endl;
+			return false;
+		}
+		return abs(rightHeight - leftHeight) < 2
+			&& _IsBalance(root->_left)
+			&& _IsBalance(root->_right);
+	}
+	void _PrevOrder(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		cout << root->_kv.first << " : " << root->_kv.second << endl;
+		_PrevOrder(root->_left);
+		_PrevOrder(root->_right);
+	}
+	void _InOrder(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		_InOrder(root->_left);
+		cout << root->_kv.first << " : " << root->_kv.second << endl;
+		_InOrder(root->_right);
+	}
+	void _PostOrder(Node* root)
+	{
+		if (root == nullptr)
+			return;
+		_PostOrder(root->_left);
+		_PostOrder(root->_right);
+		cout << root->_kv.first << " : " << root->_kv.second << endl;
 	}
 private:
 	Node* _root;
