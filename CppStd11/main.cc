@@ -5,6 +5,7 @@
 #include <map>
 #include <string>
 #include <cstring>
+#include <cmath>
 
 using namespace std;
 
@@ -113,6 +114,8 @@ int main(){
 }
 #endif
 
+#if 0
+
 int main(){
     /*
     int i = 10;
@@ -130,5 +133,34 @@ int main(){
     decltype(&x) p;
     cout << typeid(ret).name() << endl;
     cout << typeid(p).name() << endl;
+    return 0;
+}
+#endif
+
+#if 0
+#include <array>
+#include <forward_list>
+int main(){
+    array<int, 10> a1;
+    array<int, 20> a2;
+    //对于越界标准更严格，其他的和普通数组没区别。。。
+    return 0;
+}
+#endif
+
+/*
+ * 右值是一个表示数据的表达式，如：字面常量， 表达式返回值， 函数返回值(这个不能是左值引用返回)等
+ * 右值引用之后，会导致右值存储到一个特定的位置，且可以取到该位置的地址
+ * */
+int main(){
+    double x = 1.1, y = 2.2;
+
+    int&& r1 = 10;
+    double&& r2 = x + y;
+    double&& r3 = fmin(x, y);
+
+    cout << r1 << endl;
+    cout << r2 << endl;
+    cout << r3 << endl;
     return 0;
 }
