@@ -6,6 +6,7 @@
 #include <string>
 #include <cstring>
 #include <cmath>
+#include <utility>
 
 using namespace std;
 
@@ -148,6 +149,7 @@ int main(){
 }
 #endif
 
+#if 0
 /*
  * 右值是一个表示数据的表达式，如：字面常量， 表达式返回值， 函数返回值(这个不能是左值引用返回)等
  * 右值引用之后，会导致右值存储到一个特定的位置，且可以取到该位置的地址
@@ -162,5 +164,30 @@ int main(){
     cout << r1 << endl;
     cout << r2 << endl;
     cout << r3 << endl;
+    return 0;
+}
+#endif
+
+void Fun(int& x){ std::cout << "左值引用" << std::endl;}
+void Fun(const int& x) { std::cout << "const 左值引用" << std::endl;}
+
+void Fun(int&& x) { std::cout << "右值引用" << std::endl;}
+void Fun(const int&& x) { std::cout << "const 右值引用" << std::endl;}
+
+template <typename T>
+void PerfectForward(T&& t){
+    Fun(std::forward<T>(t));
+}
+
+int main(){
+    PerfectForward(10);
+
+    int a;
+    PerfectForward(a);
+    PerfectForward(std::move(a));
+
+    const int b = 8;
+    PerfectForward(b);
+    PerfectForward(std::move(b));
     return 0;
 }
