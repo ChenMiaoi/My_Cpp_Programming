@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="helloVscode" type="helloVscode" name="hello" output="screen"/>
+</launch>

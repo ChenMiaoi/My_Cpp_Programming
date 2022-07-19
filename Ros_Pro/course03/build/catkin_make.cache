@@ -1,0 +1,2 @@
+plumbing_pub_sub
+-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCATKIN_DEVEL_PREFIX=/home/zack/Ros_Pro/course03/devel -DCMAKE_INSTALL_PREFIX=/home/zack/Ros_Pro/course03/install -G Unix Makefiles

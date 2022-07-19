@@ -1,0 +1,8 @@
+prefix=/home/zack/Ros_Pro/course02/install
+
+Name: helloVscode
+Description: Description of helloVscode
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

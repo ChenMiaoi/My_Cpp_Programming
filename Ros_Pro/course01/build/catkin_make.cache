@@ -1,0 +1,2 @@
+helloworld
+-DCATKIN_DEVEL_PREFIX=/home/zack/Ros_Pro/course01/devel -DCMAKE_INSTALL_PREFIX=/home/zack/Ros_Pro/course01/install -G Unix Makefiles
