@@ -1,0 +1,14 @@
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.csproj.AssemblyReference.cache
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.GeneratedMSBuildEditorConfig.editorconfig
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.AssemblyInfoInputs.cache
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.AssemblyInfo.cs
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.csproj.CoreCompileInputs.cache
+C:\SoftWare\CScrip\course04\course04\bin\Debug\netcoreapp3.1\course04.exe
+C:\SoftWare\CScrip\course04\course04\bin\Debug\netcoreapp3.1\course04.deps.json
+C:\SoftWare\CScrip\course04\course04\bin\Debug\netcoreapp3.1\course04.runtimeconfig.json
+C:\SoftWare\CScrip\course04\course04\bin\Debug\netcoreapp3.1\course04.runtimeconfig.dev.json
+C:\SoftWare\CScrip\course04\course04\bin\Debug\netcoreapp3.1\course04.dll
+C:\SoftWare\CScrip\course04\course04\bin\Debug\netcoreapp3.1\course04.pdb
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.dll
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.pdb
+C:\SoftWare\CScrip\course04\course04\obj\Debug\netcoreapp3.1\course04.genruntimeconfig.cache

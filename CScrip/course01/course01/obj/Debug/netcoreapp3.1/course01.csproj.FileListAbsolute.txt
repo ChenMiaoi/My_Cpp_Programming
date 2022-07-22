@@ -1,0 +1,14 @@
+C:\SoftWare\CScrip\course01\course01\bin\Debug\netcoreapp3.1\course01.exe
+C:\SoftWare\CScrip\course01\course01\bin\Debug\netcoreapp3.1\course01.deps.json
+C:\SoftWare\CScrip\course01\course01\bin\Debug\netcoreapp3.1\course01.runtimeconfig.json
+C:\SoftWare\CScrip\course01\course01\bin\Debug\netcoreapp3.1\course01.runtimeconfig.dev.json
+C:\SoftWare\CScrip\course01\course01\bin\Debug\netcoreapp3.1\course01.dll
+C:\SoftWare\CScrip\course01\course01\bin\Debug\netcoreapp3.1\course01.pdb
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.csproj.AssemblyReference.cache
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.GeneratedMSBuildEditorConfig.editorconfig
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.AssemblyInfoInputs.cache
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.AssemblyInfo.cs
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.csproj.CoreCompileInputs.cache
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.dll
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.pdb
+C:\SoftWare\CScrip\course01\course01\obj\Debug\netcoreapp3.1\course01.genruntimeconfig.cache
