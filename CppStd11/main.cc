@@ -7,6 +7,8 @@
 #include <cstring>
 #include <cmath>
 #include <utility>
+#include <algorithm>
+#include <cctype>
 
 using namespace std;
 
@@ -168,6 +170,8 @@ int main(){
 }
 #endif
 
+#if 0
+
 void Fun(int& x){ std::cout << "左值引用" << std::endl;}
 void Fun(const int& x) { std::cout << "const 左值引用" << std::endl;}
 
@@ -189,5 +193,79 @@ int main(){
     const int b = 8;
     PerfectForward(b);
     PerfectForward(std::move(b));
+    return 0;
+}
+#endif // !0
+
+#if 0
+template <class T1, class T2>
+auto F(T1 x, T2 y) -> decltype(x * y){
+    decltype(x * y) ret = x * y;
+    return ret;
+}
+int main(){
+    auto ret = F(1, 2.1);
+    std::cout << ret << std::endl;
+    return 0;
+}
+#endif // !0
+
+void ShowList(){}
+
+//template <class T, class ...Args>
+//void ShowList(T value, Args... args){
+//    //cout << sizeof...(args) << endl;
+//    cout << value << endl;
+//    ShowList(args...);
+//}
+//
+//int main(){
+//    char ch[7] = {"65ab21"};
+//    for (int i = 0; ch[i] >= '0' && ch[i] <= '9'; i++){
+//        printf("%c", ch[i]);
+//    }
+//    return 0;
+//}
+
+struct Goods{
+    string _name;
+    double _price;
+    int _num;
+};
+
+struct Compare{
+    bool operator()(const Goods& g1, const Goods& g2){
+        return g1._price <= g2._price;
+    }
+};
+
+int main(){
+    vector<Goods> gds = {
+            {"苹果", 2.1, 300},
+            {"香蕉", 3.3, 100},
+            {"橙子", 2.2, 1000}
+    };
+    std::sort(gds.begin(), gds.end(), [](const Goods& g1, const Goods& g2)->bool {
+        return g1._price < g2._price;
+
+    })
+    //std::sort(gds.begin(), gds.end(), Compare());
+    //lambda表达式
+    /*
+     * [capture-list](parameters)multable->return-type{statement}
+     * 捕捉列表：总是在lambda表达式函数开始的位置，编译器根据[]来判断接下来的代码是否为lambda,且能够捕捉上下文的变量供lambda使用
+     * 参数列表：与普通的传参一样，若没有参数，可以省略()
+     * mutable：默认情况下，lambda总是一个const函数，mutable可以取消其常量性，使用该参数时，参数列表不可省略
+     *
+     * 最简单的lambda表达式：[]{}
+     * */
+    []{};
+    int a = 1, b = 2;
+    //实现add的lambda
+    auto add = [](int x, int y)->int {return x + y;};
+    cout << add(a, b) << endl;
+
+    auto add1 = [a, b]()->int {return a + b + 10;};
+    cout << add1() << endl;
     return 0;
 }
