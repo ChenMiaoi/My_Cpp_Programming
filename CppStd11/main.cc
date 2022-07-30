@@ -9,6 +9,7 @@
 #include <utility>
 #include <algorithm>
 #include <cctype>
+#include <functional>
 
 using namespace std;
 
@@ -239,6 +240,7 @@ struct Compare{
     }
 };
 
+#if 0
 int main(){
     vector<Goods> gds = {
             {"苹果", 2.1, 300},
@@ -267,5 +269,225 @@ int main(){
 
     auto add1 = [a, b]()->int {return a + b + 10;};
     cout << add1() << endl;
+    return 0;
+}
+#endif
+
+#if 0
+int main(){
+    list<pair<int, char>> mylist;
+    mylist.emplace_back(10, 'a');
+    mylist.emplace_back(make_pair(30, 'c'));
+
+    for (auto& e : mylist){
+        cout << e.first << ":" << e.second << endl;
+    }
+    return 0;
+}
+#endif
+
+#if 0
+int main(){
+    int a = 0, b = 0;
+    /*
+     * 对于捕捉列表的参数：
+     * [var]：传值捕捉
+     * [&var]：引用捕捉
+     * [=]：捕捉局部内所有的变量，以传值的方式(包括this
+     * [&]：捕捉局部内所有的变量，以引用的方式(包括this
+     * */
+#if 0
+    auto swap = [](int& x, int& y)->void {
+        int temp = x;
+        x = y;
+        y = temp;
+    };
+#endif
+    auto swap = [&a, &b]{
+        int temp = a;
+        a = b;
+        b = temp;
+    };
+    return 0;
+}
+#endif
+
+#if 0
+int f1(int a, int b){
+    return a + b;
+}
+
+struct Function{
+public:
+    int operator() (int a, int b){
+        return a + b;
+    }
+};
+
+class Plus{
+public:
+    static int func1(int a, int b){
+        return a + b;
+    }
+    double func2(double a, double b){
+        return a + b;
+    }
+};
+
+auto func = [](int a, int b)-> decltype(a + b){
+    return a + b;
+};
+
+int main(){
+    // 函数指针
+    std::function<int(int, int)> ff1 = f1;
+    cout << f1(1, 2) << endl;
+
+    //仿函数
+    std::function<int(int, int)> ff2 = Function();
+    cout << ff2(1, 2) << endl;
+
+    //类的对象
+    //静态成员
+    std::function<int(int, int)> ff3 = Plus::func1;
+    cout << ff3(1, 2) << endl;
+
+    //普通成员
+    //注意，普通成员需要注意this指针，因此需要对对象取地址，且需要传入类
+    std::function<double(Plus, double, double)> ff4 = &Plus::func2;
+    cout << ff4(Plus(), 1.1, 2.2) << endl;
+
+    //lambda
+    std::function<int(int, int)> ff5 = func;
+    cout << ff5(1, 2) << endl;
+    return 0;
+}
+#endif
+
+int Plus(int a, int b){
+    return a + b;
+}
+
+class Sub{
+public:
+    int sub(int a, int b){
+        return a - b;
+    }
+};
+
+#if 0
+int main(){
+    std::function<int(int, int)> f1 = std::bind(Plus, placeholders::_1, placeholders::_2);
+    cout << f1(1, 2) << endl;
+
+    //绑定成一个值 + 10
+    std::function<int(int)> f2 = std::bind(Plus, 10, placeholders::_1);
+    cout << f2(10) << endl;
+
+    //绑定普通成员函数
+    std::function<int(int, int)> f3 = std::bind(&Sub::sub, Sub(), placeholders::_1, placeholders::_2);
+    cout << f3(1, 2) << endl;
+    return 0;
+}
+#endif
+
+#include <thread>
+#include <mutex>
+
+#if 0
+int main(){
+    size_t n = 100;
+    std::thread t1([&]{
+        for (size_t i = 0; i < n; i += 2){
+            cout << i << endl;
+        }
+    });
+    std::thread t2([&]{
+        for (size_t i = 1; i < n; i += 2){
+            cout << i << endl;
+        }
+    });
+
+    t1.join();
+    t2.join();
+    return 0;
+}
+#endif
+
+mutex mtx;
+
+void func(int N){
+    int x = 0;
+    for (int i = 0; i < N; ++i) {
+        mtx.lock();
+        cout << this_thread::get_id() << " : " << x << endl;
+        x++;
+        this_thread::sleep_for(chrono::milliseconds(500));
+        mtx.unlock();
+    }
+}
+#include <atomic>
+
+#if 0
+int main(){
+    int n;
+    cin >> n;
+
+    vector<thread> vthreads;
+    vthreads.resize(n);
+    atomic<int> x {0};
+    int N = 10000;
+    mutex mt;
+    for (auto& td : vthreads){
+        td = thread([&mt, &x, &N]{
+            for (int i = 0; i < N; i++){
+                //mt.lock();
+                cout << this_thread::get_id() << " : " << x << endl;
+                ++x;
+                //this_thread::sleep_for(chrono::seconds (1));
+                //mt.unlock();
+            }
+        });
+    }
+
+    for (auto& td : vthreads){
+        td.join();
+    }
+    cout << n << "个线程对x++了" << N << "次， 此时x为：" << x << endl;
+    return 0;
+}
+#endif
+
+namespace My{
+    template <class Lock>
+    class lock_guard{
+    public:
+        lock_guard(Lock& lock)
+            : _lock(lock)
+        {
+            _lock.lock();
+            cout << "加锁" << endl;
+        }
+
+        lock_guard(const lock_guard<Lock>& lock) = delete;
+
+        ~lock_guard(){
+            _lock.unlock();
+            cout << "解锁" << endl;
+        }
+    private:
+        Lock& _lock;
+    };
+}
+
+void f(){
+    My::lock_guard<mutex> lg(mtx);
+    if (true){
+        return;
+    }
+}
+
+int main(){
+    f();
     return 0;
 }
